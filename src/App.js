@@ -6,39 +6,40 @@ class App extends Component {
     return (
       <div className="App">
         <div>
-          Your age: <span>{this.props.age}</span>
+          <div>
+            <span>A:</span>
+            <span>{this.props.a}</span>
+          </div>
+          <button onClick={() => this.props.updateA(this.props.b)}>
+            Update A
+          </button>
         </div>
-        <button onClick={this.props.onAgeUp}>Age Up</button>
-        <button onClick={this.props.onAgeDown}>Age Down</button>
-        <hr />
-        <div>History</div>
         <div>
-          <ul>
-            {this.props.history.map((el) => (
-              <li key={el.id} onClick={() => this.props.onDelItem(el.id)}>
-                {el.age}
-              </li>
-            ))}
-          </ul>
+          <div>
+            <span>B:</span>
+            <span>{this.props.b}</span>
+          </div>
+          <button onClick={() => this.props.updateB(this.props.a)}>
+            Update B
+          </button>
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStoreToProps = (store) => {
   return {
-    age: state.age,
-    history: state.history,
+    a: store.rA.a,
+    b: store.rB.b,
   }
 }
 
 const mapDispachToProps = (dispach) => {
   return {
-    onAgeUp: () => dispach({ type: 'AGE_UP', value: 1 }),
-    onAgeDown: () => dispach({ type: 'AGE_DOWN', value: 1 }),
-    onDelItem: (id) => dispach({ type: 'DEL_ITEM', key: id }),
+    updateA: (b) => dispach({ type: 'UPDATE_A', b: b }),
+    updateB: (a) => dispach({ type: 'UPDATE_B', a: a }),
   }
 }
 
-export default connect(mapStateToProps, mapDispachToProps)(App)
+export default connect(mapStoreToProps, mapDispachToProps)(App)
