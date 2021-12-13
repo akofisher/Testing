@@ -20,7 +20,7 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { ADDED_USERS, MAIN_PAGE } from '../routes'
+import { ADDED_USERS, LOYOUTS, MAIN_PAGE } from '../routes'
 import { selectAddedUsers } from '../store/users/userSelector'
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +68,7 @@ function NavBar(props) {
           <ListItemText primary={'ADDED USERS'} />
           <span className={classes.Number}>{Data.length}</span>
         </ListItem>
-        <ListItem button>
+        <ListItem button component={Link} to={LOYOUTS}>
           <ListItemIcon>
             <AutoStoriesIcon />
           </ListItemIcon>
