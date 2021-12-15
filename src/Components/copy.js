@@ -1,11 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../Context/UserContext'
+import React, { useEffect, useState } from 'react'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { setUser } from '../store/users/userActionsCreator'
+// import { selectUser } from '../store/users/userSelector'
+import CustomButton from './CustomButton'
 
 const useStyles = makeStyles((theme) => ({
   fetching: {
@@ -20,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '15px',
     border: '1px solid grey',
     borderRadius: '10px',
-    width: '280px',
+    width: '230px',
     margin: '10px',
     cursor: 'pointer',
   },
@@ -29,24 +33,29 @@ const useStyles = makeStyles((theme) => ({
 function Fetching() {
   const classes = useStyles()
   const [loading, setLoading] = useState(true)
-  const { value, setValue } = useContext(UserContext)
   // const dispatch = useDispatch()
   // const user = useSelector(selectUser)
   const [user, setUser] = useState([])
-  let Pages = 1
+  const [users, setUsers] = useState(15)
+  const [pages, setPages] = useState(1)
 
   const FetchingData = () => {
     axios
       .get(
-        `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${Pages}/12`,
+        `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${pages}/${users}`,
       )
       .then(({ data }) => {
         const newUsers = []
         data.list.map((p) => newUsers.push(p))
         setUser((oldUsers) => [...oldUsers, ...newUsers])
       })
-    Pages += 1
-    setLoading(false)
+      .then(() => {
+        setPages(pages + 1)
+        setUsers(users + 15)
+      })
+
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false))
   }
 
   const handleScroll = (e) => {
@@ -68,33 +77,15 @@ function Fetching() {
     window.addEventListener('scroll', handleScroll)
   }, [])
 
-  const SingleUser = async (user) => {
-    setValue({
-      prefix: user.prefix,
-      name: user.name,
-      lastName: user.lastName,
-      title: user.title,
-    })
-
-    console.log(value, 'USER INFOOO')
-  }
-
   return (
     <div className={classes.fetching}>
       {!!loading ? (
         <div>Loading...</div>
       ) : (
         !!user &&
-        user.map((user, i) => {
+        user.map((user) => {
           return (
-            <Card
-              sx={{ maxWidth: 345 }}
-              key={i + 1}
-              className={classes.cont}
-              onClick={() => {
-                SingleUser(user)
-              }}
-            >
+            <Card sx={{ maxWidth: 345 }} key={user.id} className={classes.cont}>
               <CardMedia
                 component="img"
                 height="140"
@@ -109,6 +100,9 @@ function Fetching() {
                   {user.title}
                 </Typography>
               </CardContent>
+              <CardActions>
+                <CustomButton props={user} />
+              </CardActions>
             </Card>
           )
         })

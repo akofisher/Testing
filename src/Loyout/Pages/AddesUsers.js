@@ -1,10 +1,8 @@
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { selectAddedUsers } from '../../store/users/userSelector'
+import React, { useContext } from 'react'
+import { UserContext } from '../../Context/UserContext'
 import Loyout from '../Loyout'
-import CustomButton from '../../Components/CustomButton'
 
 const useStyles = makeStyles((theme) => ({
   fetching: {
@@ -27,24 +25,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddesUsers() {
   const classes = useStyles()
-  const userAD = useSelector(selectAddedUsers)
+  const { value, setValue } = useContext(UserContext)
 
   return (
     <React.Fragment>
       <Loyout>
         <Grid container xs={12}>
           <div className={classes.fetching}>
-            {!!userAD.length &&
+            {/* {!!userAD.length &&
               userAD.map((userAD) => {
                 return (
                   <div className={classes.cont} key={userAD.id}>
                     <p>{userAD.name}</p>
                     <p>{userAD.email}</p>
                     <p>{userAD.website}</p>
-                    <CustomButton props={userAD} />
                   </div>
                 )
-              })}
+              })} */}{' '}
+            {value}
           </div>
         </Grid>
       </Loyout>

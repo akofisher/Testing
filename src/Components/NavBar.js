@@ -1,7 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles'
-import AccountBoxIcon from '@mui/icons-material/AccountBox'
-import AutoStoriesIcon from '@mui/icons-material/AutoStories'
-import CalculateIcon from '@mui/icons-material/Calculate'
 import DataObjectIcon from '@mui/icons-material/DataObject'
 import MenuIcon from '@mui/icons-material/Menu'
 import AppBar from '@mui/material/AppBar'
@@ -17,11 +14,9 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import PropTypes from 'prop-types'
 import * as React from 'react'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+// import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ADDED_USERS, LOYOUTS, MAIN_PAGE } from '../routes'
-import { selectAddedUsers } from '../store/users/userSelector'
+import { MAIN_PAGE } from '../routes'
 
 const useStyles = makeStyles((theme) => ({
   padFM: {
@@ -44,13 +39,11 @@ function NavBar(props) {
   const { window } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
-  const Data = useSelector(selectAddedUsers)
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
 
-  useEffect(() => {}, [Data])
+  // useEffect(() => {}, [])
 
   const drawer = (
     <div>
@@ -60,25 +53,6 @@ function NavBar(props) {
             <DataObjectIcon />
           </ListItemIcon>
           <ListItemText primary={'Fetched API'} />
-        </ListItem>
-        <ListItem button component={Link} to={ADDED_USERS}>
-          <ListItemIcon>
-            <AccountBoxIcon />
-          </ListItemIcon>
-          <ListItemText primary={'ADDED USERS'} />
-          <span className={classes.Number}>{Data.length}</span>
-        </ListItem>
-        <ListItem button component={Link} to={LOYOUTS}>
-          <ListItemIcon>
-            <AutoStoriesIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Loyouts'} />
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <CalculateIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Calculator'} />
         </ListItem>
       </List>
     </div>
@@ -108,7 +82,7 @@ function NavBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Ako's Page for Testing
+            Ako's Page for „Sweeft Digital“
           </Typography>
         </Toolbar>
       </AppBar>
@@ -117,7 +91,6 @@ function NavBar(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"

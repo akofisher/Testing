@@ -1,20 +1,21 @@
-import { default as React } from 'react'
+import { default as React, useMemo, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { UserContext } from './Context/UserContext'
 import AddesUsers from './Loyout/Pages/AddesUsers'
-import FirstLoy from './Loyout/Pages/FirstLoy'
-import Loyouts from './Loyout/Pages/Loyouts'
 import MainPage from './Loyout/Pages/MainPage'
-import { ADDED_USERS, FIRST, LOYOUTS, MAIN_PAGE } from './routes'
+import { ADDED_USERS, MAIN_PAGE } from './routes'
 
 export default function App() {
+  const [value, setValue] = useState(null)
+  const providerValue = useMemo(() => ({ value, setValue }), [value, setValue])
   return (
     <React.Fragment>
       <Router>
         <Switch>
-          <Route exact path={FIRST} component={FirstLoy} />
-          <Route exact path={LOYOUTS} component={Loyouts} />
-          <Route exact path={ADDED_USERS} component={AddesUsers} />
-          <Route exact path={MAIN_PAGE} component={MainPage} />
+          <UserContext.Provider value={providerValue}>
+            <Route exact path={ADDED_USERS} component={AddesUsers} />
+            <Route exact path={MAIN_PAGE} component={MainPage} />
+          </UserContext.Provider>
         </Switch>
       </Router>
     </React.Fragment>
