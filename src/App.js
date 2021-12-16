@@ -6,7 +6,7 @@ import MainPage from './Loyout/Pages/MainPage'
 import { ADDED_USERS, MAIN_PAGE } from './routes'
 
 export default function App() {
-  const [value, setValue] = useState(null)
+  const [value, setValue] = useState([])
   const providerValue = useMemo(() => ({ value, setValue }), [value, setValue])
   return (
     <React.Fragment>

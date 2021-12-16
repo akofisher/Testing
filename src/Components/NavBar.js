@@ -14,7 +14,6 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import PropTypes from 'prop-types'
 import * as React from 'react'
-// import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { MAIN_PAGE } from '../routes'
 
@@ -43,8 +42,6 @@ function NavBar(props) {
     setMobileOpen(!mobileOpen)
   }
 
-  // useEffect(() => {}, [])
-
   const drawer = (
     <div>
       <List className={classes.padFM}>
@@ -52,7 +49,7 @@ function NavBar(props) {
           <ListItemIcon>
             <DataObjectIcon />
           </ListItemIcon>
-          <ListItemText primary={'Fetched API'} />
+          <ListItemText primary={'Fetched USERS'} />
         </ListItem>
       </List>
     </div>

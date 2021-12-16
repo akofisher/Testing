@@ -1,12 +1,14 @@
 import React from 'react'
-import Fetching from '../../Components/Fetching'
+import FetchingUsers from '../../Components/Fetching'
+import ScrollToTop from '../../scroll'
 import Loyout from '../Loyout'
 
 export default function MainPage() {
   return (
     <React.Fragment>
       <Loyout>
-        <Fetching />
+        <ScrollToTop />
+        <FetchingUsers />
       </Loyout>
     </React.Fragment>
   )

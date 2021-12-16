@@ -1,91 +1,92 @@
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { setUser } from '../store/users/userActionsCreator'
-// import { selectUser } from '../store/users/userSelector'
-import CustomButton from './CustomButton'
+import { Link, useParams } from 'react-router-dom'
+import { ADDED_USERS } from '../routes'
 
 const useStyles = makeStyles((theme) => ({
   fetching: {
-    width: '80vw',
+    width: '100vw',
     height: '100vh',
     textAlign: 'center',
     display: 'flex',
     flexWrap: 'wrap',
     padding: '50px',
+    textDecoration: 'none',
   },
   cont: {
     padding: '15px',
     border: '1px solid grey',
     borderRadius: '10px',
-    width: '230px',
+    width: '280px',
     margin: '10px',
     cursor: 'pointer',
+    textDecoration: 'none',
+    '&:hover': {
+      opacity: '0.7',
+    },
   },
 }))
 
-function Fetching() {
+function FriendsFetching() {
   const classes = useStyles()
   const [loading, setLoading] = useState(true)
-  // const dispatch = useDispatch()
-  // const user = useSelector(selectUser)
   const [user, setUser] = useState([])
-  const [users, setUsers] = useState(15)
-  const [pages, setPages] = useState(1)
+  const { id } = useParams()
 
-  const FetchingData = () => {
+  let Pages = 1
+
+  const FetchingFriends = () => {
     axios
       .get(
-        `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${pages}/${users}`,
+        `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${id}/friends/${Pages}/12`,
       )
       .then(({ data }) => {
         const newUsers = []
         data.list.map((p) => newUsers.push(p))
         setUser((oldUsers) => [...oldUsers, ...newUsers])
       })
-      .then(() => {
-        setPages(pages + 1)
-        setUsers(users + 15)
-      })
-
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false))
+    Pages += 1
+    setLoading(false)
   }
 
   const handleScroll = (e) => {
-    console.log('Top: ', e.target.documentElement.scrollTop)
-    console.log('Win: ', window.innerHeight)
-    console.log('Height: ', e.target.documentElement.scrollHeight)
+    // console.log('Top: ', e.target.documentElement.scrollTop)
+    // console.log('Win: ', window.innerHeight)
+    // console.log('Height: ', e.target.documentElement.scrollHeight)
     if (
       window.innerHeight + e.target.documentElement.scrollTop + 1 >=
       e.target.documentElement.scrollHeight
     ) {
-      FetchingData()
-      console.log('Bottom')
+      FetchingFriends()
+      // console.log('Bottom')
     }
   }
 
   useEffect(() => {
-    FetchingData()
-
+    FetchingFriends()
     window.addEventListener('scroll', handleScroll)
-  }, [])
+  }, [id])
 
   return (
-    <div className={classes.fetching}>
+    <React.Fragment>
       {!!loading ? (
         <div>Loading...</div>
       ) : (
         !!user &&
-        user.map((user) => {
+        user.map((user, i) => {
           return (
-            <Card sx={{ maxWidth: 345 }} key={user.id} className={classes.cont}>
+            <Card
+              sx={{ maxWidth: 345 }}
+              key={i + 1}
+              className={classes.cont}
+              component={Link}
+              to={ADDED_USERS.replace(':id', user.id)}
+            >
               <CardMedia
                 component="img"
                 height="140"
@@ -100,15 +101,12 @@ function Fetching() {
                   {user.title}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <CustomButton props={user} />
-              </CardActions>
             </Card>
           )
         })
       )}
-    </div>
+    </React.Fragment>
   )
 }
 
-export default Fetching
+export default FriendsFetching

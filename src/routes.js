@@ -1,6 +1,2 @@
 export const MAIN_PAGE = '/'
-export const ADDED_USERS = '/added_users'
-export const LOYOUTS = '/loyouts'
-export const FIRST = '/first_loy'
-export const SECLOYOUT = '/sec_loy'
-export const THRDLOYOUT = '/thrd_loy'
+export const ADDED_USERS = '/added_users/:id'

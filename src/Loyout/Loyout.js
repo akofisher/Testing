@@ -30,8 +30,8 @@ export default function Loyout(props) {
           <NavBar />
         </Grid>
         <Grid container>
-          <Grid item className={classes.LeftS} xs={3}></Grid>
-          <Grid item className={classes.RightS} xs={9}>
+          <Grid item className={classes.LeftS} xs={2}></Grid>
+          <Grid item className={classes.RightS} xs={10}>
             {props.children}
           </Grid>
         </Grid>

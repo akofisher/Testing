@@ -4,8 +4,9 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../Context/UserContext'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ADDED_USERS } from '../routes'
 
 const useStyles = makeStyles((theme) => ({
   fetching: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     padding: '50px',
+    textDecoration: 'none',
   },
   cont: {
     padding: '15px',
@@ -23,19 +25,20 @@ const useStyles = makeStyles((theme) => ({
     width: '280px',
     margin: '10px',
     cursor: 'pointer',
+    textDecoration: 'none',
+    '&:hover': {
+      opacity: '0.7',
+    },
   },
 }))
 
-function Fetching() {
+function FetchingUsers() {
   const classes = useStyles()
   const [loading, setLoading] = useState(true)
-  const { value, setValue } = useContext(UserContext)
-  // const dispatch = useDispatch()
-  // const user = useSelector(selectUser)
   const [user, setUser] = useState([])
   let Pages = 1
 
-  const FetchingData = () => {
+  const FetchingBigData = () => {
     axios
       .get(
         `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${Pages}/12`,
@@ -50,34 +53,22 @@ function Fetching() {
   }
 
   const handleScroll = (e) => {
-    console.log('Top: ', e.target.documentElement.scrollTop)
-    console.log('Win: ', window.innerHeight)
-    console.log('Height: ', e.target.documentElement.scrollHeight)
+    // console.log('Top: ', e.target.documentElement.scrollTop)
+    // console.log('Win: ', window.innerHeight)
+    // console.log('Height: ', e.target.documentElement.scrollHeight)
     if (
       window.innerHeight + e.target.documentElement.scrollTop + 1 >=
       e.target.documentElement.scrollHeight
     ) {
-      FetchingData()
-      console.log('Bottom')
+      FetchingBigData()
+      // console.log('Bottom')
     }
   }
 
   useEffect(() => {
-    FetchingData()
-
+    FetchingBigData()
     window.addEventListener('scroll', handleScroll)
   }, [])
-
-  const SingleUser = async (user) => {
-    setValue({
-      prefix: user.prefix,
-      name: user.name,
-      lastName: user.lastName,
-      title: user.title,
-    })
-
-    console.log(value, 'USER INFOOO')
-  }
 
   return (
     <div className={classes.fetching}>
@@ -91,9 +82,8 @@ function Fetching() {
               sx={{ maxWidth: 345 }}
               key={i + 1}
               className={classes.cont}
-              onClick={() => {
-                SingleUser(user)
-              }}
+              component={Link}
+              to={ADDED_USERS.replace(':id', user.id)}
             >
               <CardMedia
                 component="img"
@@ -117,4 +107,4 @@ function Fetching() {
   )
 }
 
-export default Fetching
+export default FetchingUsers
